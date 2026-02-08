@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,7 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-
+    public AudioSource audioSource;
+    public AudioClip[] myAudio;
     private Animator anim;
     private Rigidbody2D rb;
     private PlayerInput pi;
@@ -20,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public BombController bomb;
     [Tooltip("This is how much we slow them down by in the air")]
     public float airMultiplier; 
+    public float groundMultiplier = 1f;
 
     public float jumpForce=10f;
     [Header("Ground Check")]
@@ -29,6 +32,7 @@ public class PlayerController : MonoBehaviour
     public float groundCheckRadius = 0.25f;
     public bool isGrounded = true;
     public float fallGravityScale = 2f; //update gravity to 200%
+    public bool wasGrounded;
 
     [Header("Shooting")]
     public Transform firePoint;
@@ -68,7 +72,15 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        wasGrounded = isGrounded;
         checkGrounded();
+        if(!wasGrounded && isGrounded)
+        {
+            groundMultiplier=2f;
+        }else if (wasGrounded && groundMultiplier > 1f)
+        {
+            groundMultiplier-=.05f;
+        }
         //one way to move: translate
         //transform.Translate(moveInput*Vector2.right * Time.deltaTime);
         if(moveInput.x < 0 && facingRight)
@@ -96,7 +108,7 @@ public class PlayerController : MonoBehaviour
         float targetSpeed = moveInput.x * movespeed; //max speed
         float speedDiff = targetSpeed - rb.linearVelocity.x; //how far from speed max.
         //float accelRate = movespeed;
-        float accelRate = isGrounded ? movespeed : movespeed * airMultiplier;
+        float accelRate = isGrounded ? movespeed * groundMultiplier : movespeed * airMultiplier;
         float movement = speedDiff*accelRate; //how hard to push player
         rb.AddForce(Vector2.right*movement);
         anim.SetFloat("speed", Math.Abs(rb.linearVelocity.x));
@@ -176,9 +188,15 @@ public class PlayerController : MonoBehaviour
             {
                 Death();
             }
+            else
+            {
+                audioSource.clip = myAudio[1];
+                audioSource.Play();
+            }
         }
         if (collision.gameObject.CompareTag("console"))
         {
+            collision.gameObject.GetComponent<AudioSource>().Play();
             bomb.Disarm();
         }
     }
@@ -198,6 +216,8 @@ public class PlayerController : MonoBehaviour
         GameManager.instance.DecreaseLives();
         Debug.Log("Lives: " + GameManager.instance.GetLives());
         Invoke("Restart", 2f);
+        audioSource.clip = myAudio[0];
+        audioSource.Play();
     }
 
     public void Reset()

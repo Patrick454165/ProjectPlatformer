@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88c2c6c9180b8d6439f0b91158dd4624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  audioSource: {fileID: 23438526}
   timerText: {fileID: 23438524}
   timer: 60
   player: {fileID: 1831671612}
@@ -286,7 +287,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: acec0378b3b81154888ff0204d89ee27, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.279
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -102851,7 +102852,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -149908,9 +149909,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85fd9a130cae7549be36f92135bd790, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  audioSource: {fileID: 1831671615}
+  myAudio:
+  - {fileID: 8300000, guid: 0b25c53d4e6d9fb4ea844c0af8b99bc5, type: 3}
+  - {fileID: 8300000, guid: 4658622ff047b554580600c35c724269, type: 3}
   movespeed: 8
   bomb: {fileID: 23438523}
   airMultiplier: 0.7
+  groundMultiplier: 1
   jumpForce: 7
   groundCheck: {fileID: 1390642946}
   shadowDot: {fileID: 583962860}
@@ -149920,6 +149926,7 @@ MonoBehaviour:
   groundCheckRadius: 0.25
   isGrounded: 1
   fallGravityScale: 2
+  wasGrounded: 0
   firePoint: {fileID: 1411760493}
   fire: {fileID: 7786744941978808221, guid: 8dcf23363db04df439d7a50c5e9221ad, type: 3}
   attackRate: 0.25
@@ -150284,7 +150291,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 6ae63c1a58885c9498a5b6a2edd83bec, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

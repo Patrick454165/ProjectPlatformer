@@ -4,6 +4,7 @@ using System.Collections;
 
 public class DragonController : MonoBehaviour
 {
+    public AudioSource audioSource;
     public float distance = 3f;
     public float movement = .25f;
     public float speed;
@@ -58,8 +59,15 @@ public class DragonController : MonoBehaviour
 
             if(health <= 0)
             {
-                Destroy(gameObject);
+                gameObject.transform.Translate(0, -999, 0);
+                audioSource.Play();
+                Invoke("Despawn", 2f);
             }
         }
+    }
+
+    public void Despawn()
+    {
+        Destroy(gameObject);
     }
 }

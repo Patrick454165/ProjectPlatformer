@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BombController : MonoBehaviour
 {
+    public AudioSource audioSource;
 
     public TextMeshProUGUI timerText;
     
@@ -41,6 +41,7 @@ public class BombController : MonoBehaviour
                 else
                 {
                     timerText.text = "00 : 0" + timer;
+                    audioSource.Play();
                 }
                 
             }
