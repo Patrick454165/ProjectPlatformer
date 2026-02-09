@@ -1,10 +1,12 @@
 using System;
 using System.Runtime.CompilerServices;
+using Microsoft.Unity.VisualStudio.Editor;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -40,11 +42,24 @@ public class PlayerController : MonoBehaviour
     public float attackRate;
     public float nextAttackTime;
 
+    [Header("HealthDisplay")]
+    public UnityEngine.UI.Image heart;
+    public UnityEngine.UI.Image heart1;
+    public UnityEngine.UI.Image heart2;
+    public UnityEngine.UI.Image heart3;
+    public Sprite fullHeart;
+    public Sprite noHeart;
+    public UnityEngine.UI.Image[] hearts;
+
     void Awake()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         pi = GetComponent<PlayerInput>();
+        hearts[0]=heart;
+        hearts[1]=heart1;
+        hearts[2]=heart2;
+        hearts[3]=heart3;
     }
 
     void OnMove(InputValue movementValue)
@@ -192,6 +207,14 @@ public class PlayerController : MonoBehaviour
             {
                 audioSource.clip = myAudio[1];
                 audioSource.Play();
+                foreach(UnityEngine.UI.Image cHeart in hearts)
+                {
+                    if(cHeart.sprite == fullHeart)
+                    {
+                        cHeart.sprite = noHeart;
+                        break;
+                    }
+                }
             }
         }
         if (collision.gameObject.CompareTag("console"))
@@ -210,6 +233,10 @@ public class PlayerController : MonoBehaviour
 
     public void Death()
     {
+        foreach(UnityEngine.UI.Image cHeart in hearts)
+        {
+            cHeart.sprite = noHeart;
+        }
         pi.enabled = false;
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
         anim.SetBool("isDead", true);
